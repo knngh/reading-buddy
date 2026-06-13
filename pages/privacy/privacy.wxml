@@ -1,0 +1,71 @@
+<view class="page page-privacy">
+
+  <!-- App Logo and Name -->
+  <view class="privacy-header">
+    <view class="app-logo">
+      <text class="logo-text">读</text>
+    </view>
+    <text class="app-name">读书搭子</text>
+    <text class="app-desc">找到志同道合的阅读伙伴，一起享受阅读的美好时光</text>
+  </view>
+
+  <!-- Data Collection Explanation -->
+  <view class="privacy-card">
+    <text class="card-heading">信息收集说明</text>
+    <text class="card-subtext">为了提供更好的服务体验，我们需要收集以下信息：</text>
+
+    <view class="collection-list">
+      <!-- Location -->
+      <view class="collection-item">
+        <view class="collection-icon-wrap location-bg">
+          <text class="collection-icon">📍</text>
+        </view>
+        <view class="collection-content">
+          <text class="collection-name">位置信息</text>
+          <text class="collection-desc">用于推荐附近的读书活动，帮助您找到同城的阅读搭子</text>
+        </view>
+      </view>
+
+      <!-- Personal Info -->
+      <view class="collection-item">
+        <view class="collection-icon-wrap profile-bg">
+          <text class="collection-icon">👤</text>
+        </view>
+        <view class="collection-content">
+          <text class="collection-name">个人资料</text>
+          <text class="collection-desc">昵称、头像、阅读偏好，用于匹配推荐，让系统为您找到最合适的读书搭子</text>
+        </view>
+      </view>
+
+      <!-- Activity Content -->
+      <view class="collection-item">
+        <view class="collection-icon-wrap activity-bg">
+          <text class="collection-icon">📚</text>
+        </view>
+        <view class="collection-content">
+          <text class="collection-name">活动内容</text>
+          <text class="collection-desc">发布的活动和书评，用于内容审核和推荐优化，提升社区内容质量</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- Privacy Policy Link -->
+  <view class="privacy-link-row">
+    <text class="privacy-link-text">查看</text>
+    <text class="privacy-link" bindtap="onOpenContract">《隐私保护指引》</text>
+  </view>
+
+  <!-- Agree Button -->
+  <view class="privacy-actions">
+    <button
+      class="btn btn-primary btn-agree"
+      open-type="agreePrivacyAuthorization"
+      bindagreeprivacyauthorization="onAgree"
+    >
+      同意并继续
+    </button>
+    <text class="privacy-tip">点击「同意并继续」即表示您已阅读并同意上述信息收集说明及隐私保护指引</text>
+  </view>
+
+</view>

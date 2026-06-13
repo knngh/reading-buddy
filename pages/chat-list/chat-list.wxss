@@ -1,0 +1,784 @@
+/* pages/chat-list/chat-list.wxss */
+
+.page-container {
+  background: #F5F5FA;
+  min-height: 100vh;
+  padding-bottom: 40rpx;
+}
+
+/* ==================== Tab Bar ==================== */
+.tab-bar {
+  display: flex;
+  background: #FFFFFF;
+  padding: 0 24rpx;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.04);
+}
+
+.tab-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24rpx 0 20rpx;
+  position: relative;
+}
+
+.tab-text {
+  font-size: 28rpx;
+  color: #8E8E93;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.tab-item.active .tab-text {
+  color: #6C63FF;
+  font-weight: 700;
+}
+
+.tab-indicator {
+  position: absolute;
+  bottom: 0;
+  width: 48rpx;
+  height: 6rpx;
+  background: #6C63FF;
+  border-radius: 3rpx;
+}
+
+/* ==================== Loading ==================== */
+.loading-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 120rpx 0;
+}
+
+.loading-spinner {
+  width: 56rpx;
+  height: 56rpx;
+  border: 4rpx solid #E5E5EA;
+  border-top-color: #6C63FF;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin-bottom: 20rpx;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.loading-text {
+  font-size: 26rpx;
+  color: #8E8E93;
+}
+
+/* ==================== Tab Content ==================== */
+.tab-content {
+  padding: 24rpx;
+}
+
+/* ==================== Funnel Card ==================== */
+.funnel-card {
+  padding: 28rpx 24rpx;
+}
+
+.funnel-chart {
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+}
+
+.funnel-stage {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+}
+
+.funnel-bar-wrap {
+  flex: 1;
+  height: 40rpx;
+  background: #F5F5FA;
+  border-radius: 8rpx;
+  overflow: hidden;
+}
+
+.funnel-bar {
+  height: 100%;
+  border-radius: 8rpx;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 12rpx;
+  min-width: 60rpx;
+  transition: width 0.4s ease;
+}
+
+.funnel-count {
+  font-size: 22rpx;
+  color: #FFFFFF;
+  font-weight: 600;
+}
+
+.funnel-label {
+  font-size: 24rpx;
+  color: #3A3A4A;
+  width: 100rpx;
+  flex-shrink: 0;
+  text-align: right;
+}
+
+/* ==================== City Card ==================== */
+.city-card {
+  padding: 28rpx 24rpx;
+}
+
+.city-stage-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.city-stage-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 16rpx;
+  padding: 8rpx 0;
+}
+
+.city-stage-item.current {
+  background: rgba(108, 99, 255, 0.04);
+  border-radius: 12rpx;
+  padding: 12rpx 16rpx;
+  margin: 0 -16rpx;
+}
+
+.stage-dot-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+  width: 32rpx;
+}
+
+.stage-dot {
+  width: 20rpx;
+  height: 20rpx;
+  border-radius: 50%;
+  background: #E5E5EA;
+  flex-shrink: 0;
+}
+
+.stage-dot.active {
+  background: #6C63FF;
+  box-shadow: 0 0 12rpx rgba(108, 99, 255, 0.4);
+}
+
+.stage-line {
+  width: 4rpx;
+  height: 48rpx;
+  background: #E5E5EA;
+  margin: 6rpx 0;
+}
+
+.stage-info {
+  flex: 1;
+}
+
+.stage-name {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #1A1A2E;
+  margin-bottom: 4rpx;
+}
+
+.stage-desc {
+  font-size: 22rpx;
+  color: #8E8E93;
+}
+
+.stage-count {
+  font-size: 30rpx;
+  font-weight: 700;
+  color: #6C63FF;
+  flex-shrink: 0;
+}
+
+/* ==================== Stats Card ==================== */
+.stats-card {
+  padding: 28rpx 24rpx;
+}
+
+.grid {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.grid-3 .grid-item {
+  width: 33.33%;
+  box-sizing: border-box;
+  padding: 12rpx 8rpx;
+  text-align: center;
+}
+
+.grid-4 .grid-item {
+  width: 25%;
+  box-sizing: border-box;
+  padding: 12rpx 6rpx;
+  text-align: center;
+}
+
+.stats-item {
+  background: #F8F8FC;
+  border-radius: 12rpx;
+  padding: 16rpx 8rpx;
+}
+
+.stats-item-danger {
+  background: rgba(255, 59, 48, 0.06);
+}
+
+.stats-value {
+  font-size: 36rpx;
+  font-weight: 700;
+  color: #1A1A2E;
+  line-height: 1.2;
+}
+
+.stats-item-danger .stats-value {
+  color: #FF3B30;
+}
+
+.stats-label {
+  font-size: 20rpx;
+  color: #8E8E93;
+  margin-top: 6rpx;
+}
+
+/* ==================== Queue Card ==================== */
+.queue-card {
+  padding: 28rpx 24rpx;
+}
+
+.queue-empty {
+  text-align: center;
+  padding: 60rpx 0;
+}
+
+.queue-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+}
+
+.queue-item {
+  background: #FAFAFF;
+  border-radius: 16rpx;
+  padding: 24rpx;
+  border: 2rpx solid #F0F0F5;
+}
+
+.queue-header {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+  margin-bottom: 16rpx;
+}
+
+.queue-priority {
+  padding: 4rpx 16rpx;
+  border-radius: 16rpx;
+  font-size: 20rpx;
+  font-weight: 600;
+}
+
+.priority-high {
+  background: rgba(255, 59, 48, 0.1);
+  color: #FF3B30;
+}
+
+.priority-medium {
+  background: rgba(255, 149, 0, 0.1);
+  color: #FF9500;
+}
+
+.priority-low {
+  background: rgba(0, 196, 140, 0.1);
+  color: #00C48C;
+}
+
+.priority-text {
+  font-size: 20rpx;
+}
+
+.queue-type {
+  background: #F0EEFF;
+  padding: 4rpx 16rpx;
+  border-radius: 16rpx;
+}
+
+.type-text {
+  font-size: 20rpx;
+  color: #6C63FF;
+  font-weight: 500;
+}
+
+.queue-badge {
+  margin-left: auto;
+}
+
+.queue-body {
+  margin-bottom: 16rpx;
+}
+
+.queue-desc {
+  font-size: 28rpx;
+  color: #3A3A4A;
+  line-height: 1.5;
+  margin-bottom: 10rpx;
+}
+
+.queue-meta {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+}
+
+.queue-activity-title {
+  font-size: 24rpx;
+  color: #6C63FF;
+  font-weight: 500;
+}
+
+.queue-time {
+  font-size: 22rpx;
+  color: #8E8E93;
+}
+
+.queue-actions {
+  display: flex;
+  gap: 12rpx;
+  justify-content: flex-end;
+}
+
+.queue-actions .btn {
+  min-width: 120rpx;
+}
+
+/* ==================== Application List (Tab 1) ==================== */
+.app-list-card {
+  padding: 0;
+  overflow: hidden;
+}
+
+.app-list-empty,
+.created-list-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 80rpx 0;
+}
+
+.empty-icon {
+  font-size: 72rpx;
+  margin-bottom: 16rpx;
+}
+
+.empty-text {
+  font-size: 28rpx;
+  color: #C7C7CC;
+}
+
+.app-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.app-item {
+  display: flex;
+  align-items: center;
+  padding: 28rpx 24rpx;
+  border-bottom: 1rpx solid #F0F0F5;
+  position: relative;
+}
+
+.app-item:last-child {
+  border-bottom: none;
+}
+
+.app-item-header {
+  flex: 1;
+  min-width: 0;
+}
+
+.app-item-title {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #1A1A2E;
+  margin-bottom: 8rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.app-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8rpx;
+  padding: 4rpx 14rpx;
+  border-radius: 16rpx;
+  background: #F5F5FA;
+}
+
+.app-status-badge.status-pending {
+  background: rgba(255, 149, 0, 0.08);
+}
+
+.app-status-badge.status-accepted {
+  background: rgba(0, 196, 140, 0.08);
+}
+
+.app-status-badge.status-rejected {
+  background: rgba(255, 59, 48, 0.08);
+}
+
+.app-status-badge.status-withdrawn {
+  background: rgba(142, 142, 147, 0.08);
+}
+
+.status-dot {
+  width: 14rpx;
+  height: 14rpx;
+  border-radius: 50%;
+}
+
+.status-dot-pending {
+  background: #FF9500;
+}
+
+.status-dot-accepted {
+  background: #00C48C;
+}
+
+.status-dot-rejected {
+  background: #FF3B30;
+}
+
+.status-dot-withdrawn {
+  background: #8E8E93;
+}
+
+.status-text {
+  font-size: 22rpx;
+  color: #3A3A4A;
+}
+
+.app-item-meta {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  margin-top: 8rpx;
+}
+
+.app-genre {
+  font-size: 22rpx;
+  color: #6C63FF;
+  background: rgba(108, 99, 255, 0.08);
+  padding: 2rpx 12rpx;
+  border-radius: 10rpx;
+}
+
+.app-time {
+  font-size: 22rpx;
+  color: #8E8E93;
+}
+
+.app-item-arrow {
+  flex-shrink: 0;
+  padding-left: 16rpx;
+}
+
+.arrow-icon {
+  font-size: 40rpx;
+  color: #C7C7CC;
+}
+
+/* ==================== Created List (Tab 2) ==================== */
+.created-list-card {
+  padding: 0;
+  overflow: hidden;
+}
+
+.created-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.created-item {
+  padding: 28rpx 24rpx;
+  border-bottom: 1rpx solid #F0F0F5;
+}
+
+.created-item:last-child {
+  border-bottom: none;
+}
+
+.created-header {
+  margin-bottom: 20rpx;
+}
+
+.created-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10rpx;
+}
+
+.created-title {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #1A1A2E;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-right: 16rpx;
+}
+
+.created-status {
+  font-size: 22rpx;
+  padding: 4rpx 14rpx;
+  border-radius: 14rpx;
+  flex-shrink: 0;
+}
+
+.created-status.status-open {
+  color: #00C48C;
+  background: rgba(0, 196, 140, 0.1);
+}
+
+.created-status.status-full {
+  color: #FF9500;
+  background: rgba(255, 149, 0, 0.1);
+}
+
+.created-status.status-matched {
+  color: #6C63FF;
+  background: rgba(108, 99, 255, 0.1);
+}
+
+.created-status.status-completed {
+  color: #8E8E93;
+  background: rgba(142, 142, 147, 0.1);
+}
+
+.created-status.status-cancelled {
+  color: #FF3B30;
+  background: rgba(255, 59, 48, 0.1);
+}
+
+.created-meta {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  margin-bottom: 16rpx;
+}
+
+.created-genre {
+  font-size: 22rpx;
+  color: #6C63FF;
+  background: rgba(108, 99, 255, 0.08);
+  padding: 2rpx 12rpx;
+  border-radius: 10rpx;
+}
+
+.created-time {
+  font-size: 22rpx;
+  color: #8E8E93;
+}
+
+.created-counts {
+  display: flex;
+  gap: 24rpx;
+}
+
+.count-item {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+}
+
+.count-value {
+  font-size: 28rpx;
+  font-weight: 700;
+  color: #1A1A2E;
+}
+
+.count-label {
+  font-size: 22rpx;
+  color: #8E8E93;
+}
+
+.count-pending .count-value {
+  color: #FF9500;
+}
+
+.count-accepted .count-value {
+  color: #00C48C;
+}
+
+.count-rejected .count-value {
+  color: #FF3B30;
+}
+
+/* ==================== Inline Applicants ==================== */
+.inline-applicants {
+  margin-top: 16rpx;
+  padding-top: 16rpx;
+  border-top: 1rpx solid #F0F0F5;
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+}
+
+.inline-applicant-item {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  background: #F8F8FC;
+  border-radius: 12rpx;
+  padding: 20rpx;
+}
+
+.inline-applicant-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.inline-applicant-name {
+  font-size: 26rpx;
+  font-weight: 600;
+  color: #1A1A2E;
+  margin-bottom: 6rpx;
+}
+
+.inline-applicant-meta {
+  display: flex;
+  align-items: center;
+  gap: 10rpx;
+  margin-bottom: 6rpx;
+}
+
+.tag-small {
+  font-size: 20rpx;
+  padding: 2rpx 12rpx;
+  border-radius: 12rpx;
+  background: rgba(108, 99, 255, 0.1);
+  color: #6C63FF;
+  display: inline-block;
+}
+
+.inline-status {
+  font-size: 20rpx;
+  font-weight: 500;
+}
+
+.inline-status.status-pending {
+  color: #FF9500;
+}
+
+.inline-status.status-accepted {
+  color: #00C48C;
+}
+
+.inline-status.status-rejected {
+  color: #FF3B30;
+}
+
+.inline-applicant-message {
+  font-size: 22rpx;
+  color: #8E8E93;
+  font-style: italic;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.inline-applicant-actions {
+  display: flex;
+  gap: 10rpx;
+  flex-shrink: 0;
+}
+
+.inline-btn {
+  min-width: 100rpx;
+  height: 56rpx;
+  line-height: 56rpx;
+  font-size: 22rpx;
+  padding: 0 18rpx;
+}
+
+/* ==================== Global Styles ==================== */
+.card {
+  background: #FFFFFF;
+  border-radius: 20rpx;
+  margin-bottom: 20rpx;
+  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.04);
+}
+
+.card-title {
+  font-size: 30rpx;
+  font-weight: 700;
+  color: #1A1A2E;
+  margin-bottom: 20rpx;
+}
+
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 80rpx;
+  border-radius: 16rpx;
+  font-size: 28rpx;
+  font-weight: 500;
+  padding: 0 32rpx;
+  border: none;
+  line-height: 80rpx;
+}
+
+.btn::after {
+  border: none;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #6C63FF, #5A54E0);
+  color: #FFFFFF;
+}
+
+.btn-secondary {
+  background: #F0EEFF;
+  color: #6C63FF;
+}
+
+.btn-accent {
+  background: linear-gradient(135deg, #FF6B6B, #EE5A5A);
+  color: #FFFFFF;
+}
+
+.btn-small {
+  height: 60rpx;
+  line-height: 60rpx;
+  font-size: 24rpx;
+  padding: 0 24rpx;
+  border-radius: 12rpx;
+}
+
+.tag {
+  display: inline-block;
+  font-size: 22rpx;
+  padding: 6rpx 16rpx;
+  border-radius: 16rpx;
+  background: #F0EEFF;
+  color: #6C63FF;
+}

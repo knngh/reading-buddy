@@ -1,0 +1,64 @@
+<view class="page page-chat">
+
+  <!-- Illustration Area -->
+  <view class="chat-placeholder">
+    <view class="placeholder-icon">
+      <view class="icon-envelope">
+        <view class="envelope-body"></view>
+        <view class="envelope-flap"></view>
+      </view>
+    </view>
+
+    <text class="placeholder-title">私信功能暂未开放</text>
+
+    <text class="placeholder-desc">
+      为保障社区安全与内容质量，私信功能正在审核优化中。当前版本采用以下沟通策略：
+    </text>
+
+    <!-- Audit Strategy -->
+    <view class="info-section">
+      <view class="info-card">
+        <text class="info-card-title">沟通机制说明</text>
+
+        <view class="info-item">
+          <text class="info-icon">🤖</text>
+          <view class="info-content">
+            <text class="info-label">AI 内容审核</text>
+            <text class="info-text">所有活动内容均由 AI 系统审核，确保社区环境健康有序</text>
+          </view>
+        </view>
+
+        <view class="info-item">
+          <text class="info-icon">📋</text>
+          <view class="info-content">
+            <text class="info-label">联系信息管控</text>
+            <text class="info-text">活动描述中的联系方式会触发审核机制，防止绕过平台沟通</text>
+          </view>
+        </view>
+
+        <view class="info-item">
+          <text class="info-icon">💬</text>
+          <view class="info-content">
+            <text class="info-label">活动评论沟通</text>
+            <text class="info-text">匹配成功后，可通过活动评论区与搭子进行交流互动</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- Content Policy -->
+    <view class="policy-section">
+      <text class="policy-title">社区内容规范</text>
+      <view class="policy-list">
+        <text class="policy-item">· 尊重他人，禁止骚扰和不当言论</text>
+        <text class="policy-item">· 活动信息需真实准确，禁止虚假宣传</text>
+        <text class="policy-item">· 禁止在平台外进行私下交易或转账</text>
+        <text class="policy-item">· 保护个人隐私，不随意透露敏感信息</text>
+      </view>
+    </view>
+
+    <!-- Go Home Button -->
+    <button class="btn btn-primary btn-home" bindtap="onGoHome">返回首页</button>
+  </view>
+
+</view>

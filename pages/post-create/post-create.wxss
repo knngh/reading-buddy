@@ -1,0 +1,88 @@
+/* post-create 页面样式 */
+
+/* ---------- 表单标签行（含 AI 按钮） ---------- */
+.form-label-row {
+  margin-bottom: 12rpx;
+}
+
+.form-label-row .form-label {
+  margin-bottom: 0;
+}
+
+/* ---------- 已选地点 ---------- */
+.selected-place {
+  margin-bottom: 16rpx;
+  padding: 20rpx 24rpx;
+}
+
+.selected-place .place-name {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #0f766e;
+}
+
+.selected-place .place-address {
+  font-size: 24rpx;
+  margin-top: 4rpx;
+}
+
+/* ---------- 地点搜索行 ---------- */
+.place-search-row {
+  margin-bottom: 16rpx;
+}
+
+.place-search-row .input {
+  height: 72rpx;
+}
+
+/* ---------- 搜索结果列表 ---------- */
+.place-results {
+  margin-top: 0;
+  margin-bottom: 16rpx;
+  padding: 0;
+  max-height: 400rpx;
+  overflow-y: auto;
+}
+
+.place-result-item {
+  padding: 20rpx 24rpx;
+  border-bottom: 1rpx solid #f1f5f9;
+}
+
+.place-result-item:last-child {
+  border-bottom: none;
+}
+
+.place-result-item:active {
+  background: #f8fafc;
+}
+
+.place-result-item .place-name {
+  font-size: 28rpx;
+  font-weight: 500;
+  color: #1e293b;
+}
+
+.place-result-item .place-address {
+  font-size: 22rpx;
+  margin-top: 4rpx;
+}
+
+/* ---------- AI 按钮 ---------- */
+.form-label-row .btn-mini {
+  font-size: 22rpx;
+  height: 48rpx;
+  line-height: 48rpx;
+  padding: 0 20rpx;
+}
+
+/* ---------- 提交区域 ---------- */
+.submit-section {
+  padding: 16rpx 0;
+}
+
+.submit-section .btn {
+  height: 88rpx;
+  font-size: 32rpx;
+  border-radius: 16rpx;
+}

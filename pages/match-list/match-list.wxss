@@ -1,0 +1,100 @@
+/* match-list 页面样式 */
+
+.header-bar {
+  padding: 8rpx 0;
+}
+
+/* ---------- AI 算法卡片 ---------- */
+.algo-title {
+  font-size: 34rpx;
+  font-weight: 700;
+  color: #fff;
+}
+
+.algo-sub {
+  font-size: 24rpx;
+  color: rgba(255, 255, 255, 0.8);
+  margin-top: 4rpx;
+}
+
+.algo-grid-item {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 12rpx;
+  padding: 16rpx 8rpx;
+  text-align: center;
+}
+
+.algo-grid-value {
+  font-size: 28rpx;
+  font-weight: 700;
+  color: #fff;
+}
+
+.algo-grid-label {
+  font-size: 20rpx;
+  color: rgba(255, 255, 255, 0.75);
+  margin-top: 4rpx;
+}
+
+/* ---------- 筛选面板 ---------- */
+.reset-link {
+  font-size: 26rpx;
+  font-weight: 600;
+}
+
+/* ---------- 活动卡片 ---------- */
+.activity-card {
+  transition: transform 0.15s ease;
+}
+
+.activity-card:active {
+  transform: scale(0.985);
+}
+
+.activity-content {
+  min-width: 0;
+}
+
+.activity-title {
+  font-size: 32rpx;
+  font-weight: 700;
+  color: #1e293b;
+  line-height: 1.4;
+  word-break: break-all;
+}
+
+.activity-meta {
+  font-size: 24rpx;
+  line-height: 1.5;
+}
+
+.activity-summary {
+  font-size: 26rpx;
+  color: #475569;
+  background: #f8fafc;
+  padding: 16rpx;
+  border-radius: 8rpx;
+  line-height: 1.6;
+  word-break: break-all;
+}
+
+/* ---------- 标签行 ---------- */
+.tag-row {
+  margin-bottom: 0;
+}
+
+.tag-row .tag {
+  margin-bottom: 4rpx;
+}
+
+/* ---------- 反馈 / 操作行 ---------- */
+.feedback-row .btn-mini {
+  font-size: 20rpx;
+  height: 44rpx;
+  line-height: 44rpx;
+  padding: 0 16rpx;
+}
+
+.action-row .btn-small {
+  min-width: 0;
+}

@@ -1,0 +1,20 @@
+{
+  "name": "reading-buddy-api",
+  "version": "1.0.0",
+  "description": "读书搭子小程序云函数后端",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"No tests configured\" && exit 0"
+  },
+  "keywords": [
+    "wechat",
+    "miniprogram",
+    "cloud-function",
+    "reading-buddy"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3"
+  }
+}

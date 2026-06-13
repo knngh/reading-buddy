@@ -1,0 +1,244 @@
+<!--
+  读书搭子 - 首页（搭子 Tab）
+  主仪表盘模板
+-->
+<view class="container page-index">
+
+  <!-- ========== 1. 顶部导航栏 ========== -->
+  <view class="header-bar flex items-center justify-between">
+    <view class="flex items-center gap-sm">
+      <text class="city-name">{{city || "全国"}}</text>
+      <text class="city-district text-muted" wx:if="{{district}}">{{district}}</text>
+    </view>
+    <text class="header-title">读书搭子</text>
+    <view class="flex items-center gap-sm">
+      <view class="header-icon-btn" bindtap="onUseCurrentLocation">
+        <text class="icon-text">定位</text>
+      </view>
+      <view class="header-avatar" bindtap="onGoProfile">
+        <image wx:if="{{user.avatarUrl}}" class="avatar-img" src="{{user.avatarUrl}}" mode="aspectFill"/>
+        <text wx:else class="avatar-placeholder">{{user.nickname ? user.nickname[0] : "我"}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 加载中 -->
+  <view wx:if="{{loading}}" class="empty">
+    <view class="empty-icon">...</view>
+    <text class="empty-text">加载中</text>
+  </view>
+
+  <block wx:else>
+
+    <!-- ========== 2. 匹配就绪面板 ========== -->
+    <view class="section">
+      <view class="card card-dark readiness-card">
+        <view class="flex items-center justify-between mb-sm">
+          <text class="readiness-title">阅读画像完成度</text>
+          <text class="readiness-pct">{{profileCompletion}}%</text>
+        </view>
+        <view class="progress-bar mb-md">
+          <view class="progress-fill" style="width: {{profileCompletion}}%"></view>
+        </view>
+        <view class="btn-row">
+          <button class="btn btn-accent btn-small" bindtap="onGoMatchList">看推荐</button>
+          <button class="btn btn-accent-light btn-small" bindtap="onGoPostCreate">发布</button>
+          <button class="btn btn-secondary btn-small" bindtap="onSeedDemo">演示</button>
+          <button class="btn btn-secondary btn-small" bindtap="onGoProfile">画像</button>
+        </view>
+      </view>
+    </view>
+
+    <!-- ========== 3. 画像提示标签 ========== -->
+    <view class="section" wx:if="{{profileTips.length > 0}}">
+      <view class="section-title">完善画像</view>
+      <view class="flex flex-wrap gap-sm">
+        <view class="tip-chip" wx:for="{{profileTips}}" wx:key="index">
+          <text>{{item}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- ========== 4. AI 洞察卡片 ========== -->
+    <view class="section" wx:if="{{aiInsight}}">
+      <view class="card ai-insight-card">
+        <view class="flex items-center gap-sm mb-sm">
+          <view class="ai-badge">AI</view>
+          <text class="section-title" style="margin-bottom:0">智能洞察</text>
+        </view>
+        <text class="ai-persona" wx:if="{{aiInsight.personaSummary}}">{{aiInsight.personaSummary}}</text>
+        <view class="flex flex-wrap gap-sm mt-sm" wx:if="{{aiInsight.personaTags.length > 0}}">
+          <text class="tag tag-teal" wx:for="{{aiInsight.personaTags}}" wx:key="index">{{item}}</text>
+        </view>
+        <view class="divider" wx:if="{{aiInsight.recommendStrategy}}"></view>
+        <text class="ai-strategy" wx:if="{{aiInsight.recommendStrategy}}">{{aiInsight.recommendStrategy}}</text>
+        <view class="mt-sm" wx:if="{{aiInsight.nextActions.length > 0}}">
+          <text class="ai-action" wx:for="{{aiInsight.nextActions}}" wx:key="index">{{item}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- ========== 5. 统计网格 ========== -->
+    <view class="section">
+      <view class="grid grid-3">
+        <view class="grid-item">
+          <view class="grid-value">{{stats.openActivities}}</view>
+          <view class="grid-label">可报名活动</view>
+        </view>
+        <view class="grid-item">
+          <view class="grid-value">{{stats.matchedCount}}</view>
+          <view class="grid-label">已成功匹配</view>
+        </view>
+        <view class="grid-item">
+          <view class="grid-value">{{stats.pendingApplications}}</view>
+          <view class="grid-label">待审核申请</view>
+        </view>
+      </view>
+    </view>
+
+    <!-- ========== 6. 读书会（意向池） ========== -->
+    <view class="section" wx:if="{{intentPools.length > 0}}">
+      <view class="section-title">读书会</view>
+      <view class="section-sub">找到同频共读伙伴</view>
+      <scroll-view scroll-x class="filter-scroll intent-scroll">
+        <view class="intent-pool-card" wx:for="{{intentPools}}" wx:key="index">
+          <view class="pool-genre">{{item.genreText}}</view>
+          <view class="pool-meta">
+            <text>{{item.city}} {{item.district}}</text>
+            <text class="pool-dot"> / </text>
+            <text>{{item.displayTime}}</text>
+          </view>
+          <view class="pool-meta">
+            <text class="text-muted">{{item.memberCount || 0}}人想参加</text>
+          </view>
+          <button class="btn btn-accent btn-mini mt-sm" data-index="{{index}}" bindtap="onJoinIntent">加入</button>
+        </view>
+      </scroll-view>
+    </view>
+
+    <!-- ========== 7. 今日优先推荐（最佳匹配） ========== -->
+    <view class="section" wx:if="{{bestMatch}}">
+      <view class="section-title">今日优先推荐</view>
+      <view class="card activity-card best-match-card">
+        <view class="activity-row flex">
+          <view class="ai-grade {{bestMatch.gradeClass}}">{{bestMatch.gradeLabel}}</view>
+          <view class="flex-1">
+            <view class="activity-title">{{bestMatch.title}}</view>
+            <view class="activity-meta flex flex-wrap gap-sm mt-sm">
+              <text class="tag tag-teal">{{bestMatch.genreText}}</text>
+              <text class="tag tag-gray" wx:if="{{bestMatch.locationText}}">{{bestMatch.locationText}}</text>
+              <text class="tag tag-gray" wx:if="{{bestMatch.timeText}}">{{bestMatch.timeText}}</text>
+            </view>
+            <view class="flex flex-wrap gap-sm mt-sm" wx:if="{{bestMatch.tags.length > 0}}">
+              <text class="tag" wx:for="{{bestMatch.tags}}" wx:key="index">{{item}}</text>
+            </view>
+            <view class="flex items-center justify-between mt-md">
+              <view class="feedback-row flex gap-sm">
+                <button class="btn btn-mini btn-secondary feedback-btn"
+                  data-id="{{bestMatch.id || bestMatch._id}}"
+                  data-type="positive"
+                  bindtap="onFeedback">感兴趣</button>
+                <button class="btn btn-mini btn-secondary feedback-btn"
+                  data-id="{{bestMatch.id || bestMatch._id}}"
+                  data-type="negative"
+                  bindtap="onFeedback">不感兴趣</button>
+              </view>
+              <button class="btn btn-mini btn-accent"
+                data-id="{{bestMatch.id || bestMatch._id}}"
+                bindtap="onApply">立即报名</button>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- ========== 8. 类型筛选 ========== -->
+    <view class="section">
+      <view class="section-title">发现活动</view>
+      <scroll-view scroll-x class="filter-scroll">
+        <view
+          wx:for="{{genreFilters}}"
+          wx:key="value"
+          class="filter-chip {{selectedGenre === item.value ? 'filter-chip-active' : ''}}"
+          data-genre="{{item.value}}"
+          bindtap="onFilterTap">
+          {{item.label}}
+        </view>
+      </scroll-view>
+    </view>
+
+    <!-- ========== 9. 活动列表 ========== -->
+    <view class="section">
+      <view wx:if="{{filteredActivities.length === 0}}" class="empty">
+        <view class="empty-icon">📚</view>
+        <text class="empty-text">暂无活动，点击"发布"创建第一个读书会</text>
+      </view>
+
+      <view
+        class="card activity-card"
+        wx:for="{{filteredActivities}}"
+        wx:key="_id"
+        data-id="{{item.id || item._id}}"
+        bindtap="onGoActivityDetail">
+        <view class="activity-row flex">
+          <view class="ai-grade {{item.gradeClass}}">{{item.gradeLabel}}</view>
+          <view class="flex-1">
+            <view class="activity-title">{{item.title}}</view>
+            <view class="activity-meta flex flex-wrap gap-sm mt-sm">
+              <text class="tag tag-teal">{{item.genreText}}</text>
+              <text class="tag tag-gray" wx:if="{{item.locationText}}">{{item.locationText}}</text>
+              <text class="tag tag-gray" wx:if="{{item.timeText}}">{{item.timeText}}</text>
+              <text class="tag tag-orange" wx:if="{{item.distanceText}}">{{item.distanceText}}</text>
+            </view>
+            <text class="activity-summary" wx:if="{{item.aiSummary}}">{{item.aiSummary}}</text>
+            <view class="flex flex-wrap gap-sm mt-sm" wx:if="{{item.tags.length > 0}}">
+              <text class="tag" wx:for="{{item.tags}}" wx:for-item="tag" wx:key="index">{{tag}}</text>
+            </view>
+            <view class="flex items-center justify-between mt-md">
+              <view class="feedback-row flex gap-sm">
+                <button class="btn btn-mini btn-secondary feedback-btn"
+                  data-id="{{item.id || item._id}}"
+                  data-type="positive"
+                  catchtap="onFeedback">感兴趣</button>
+                <button class="btn btn-mini btn-secondary feedback-btn"
+                  data-id="{{item.id || item._id}}"
+                  data-type="negative"
+                  catchtap="onFeedback">不感兴趣</button>
+              </view>
+              <button class="btn btn-mini btn-accent"
+                data-id="{{item.id || item._id}}"
+                catchtap="onApply">报名</button>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- ========== 10. 我的进展 ========== -->
+    <view class="section" wx:if="{{stats.pendingApplications > 0 || stats.matchedCount > 0}}">
+      <view class="section-title">我的进展</view>
+      <view class="card">
+        <view class="flex items-center justify-between mb-sm" wx:if="{{stats.pendingApplications > 0}}">
+          <view class="flex items-center gap-sm">
+            <view class="status-dot status-pending"></view>
+            <text>待审核申请</text>
+          </view>
+          <text class="text-accent">{{stats.pendingApplications}} 个</text>
+        </view>
+        <view class="flex items-center justify-between" wx:if="{{stats.matchedCount > 0}}">
+          <view class="flex items-center gap-sm">
+            <view class="status-dot status-matched"></view>
+            <text>已成功匹配</text>
+          </view>
+          <text class="text-accent">{{stats.matchedCount}} 个</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- ========== 11. 安全提示 ========== -->
+    <view class="safety-footer">
+      <text class="safety-text">请保护好个人信息，线下见面选择公共场所</text>
+    </view>
+
+  </block>
+</view>

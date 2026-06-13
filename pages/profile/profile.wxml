@@ -1,0 +1,314 @@
+<view class="page page-profile">
+
+  <!-- Header Section -->
+  <view class="profile-header">
+    <view class="profile-avatar">
+      <image class="avatar-img" src="{{user.avatarUrl || '/images/default-avatar.png'}}" mode="aspectFill" />
+    </view>
+    <view class="profile-info">
+      <text class="profile-nickname">{{user.nickname || '未设置昵称'}}</text>
+      <text class="profile-city">{{user.city || '未选择城市'}}{{user.district ? ' · ' + user.district : ''}}</text>
+    </view>
+    <view class="profile-completion">
+      <text class="completion-label">资料完善度</text>
+      <view class="progress-bar-wrap">
+        <view class="progress-bar">
+          <view class="progress-bar-fill" style="width: {{profileCompletion}}%;"></view>
+        </view>
+        <text class="progress-text">{{profileCompletion}}%</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- Identity Card -->
+  <view class="card identity-card">
+    <view class="card-title">身份认证</view>
+    <view class="identity-row">
+      <text class="identity-status {{user.identityVerified ? 'verified' : 'unverified'}}">
+        {{user.identityVerified ? '已认证' : '未认证'}}
+      </text>
+      <text class="identity-desc" wx:if="{{user.identityVerified}}">已通过身份验证，可放心参与活动</text>
+      <text class="identity-desc" wx:else>完成认证后可提升匹配成功率</text>
+    </view>
+  </view>
+
+  <!-- Reliability Profile Card -->
+  <view class="card reliability-card">
+    <view class="card-title">信誉档案</view>
+
+    <view class="trust-score-row">
+      <view class="trust-score-circle">
+        <text class="trust-score-num">{{reliabilityProfile.trustScore}}</text>
+        <text class="trust-score-label">信誉分</text>
+      </view>
+      <view class="trust-rates">
+        <view class="rate-item">
+          <text class="rate-value">{{reliabilityProfile.completionRate}}%</text>
+          <text class="rate-label">完成率</text>
+        </view>
+        <view class="rate-item">
+          <text class="rate-value">{{reliabilityProfile.confirmationRate}}%</text>
+          <text class="rate-label">确认率</text>
+        </view>
+        <view class="rate-item">
+          <text class="rate-value">{{reliabilityProfile.cancellationRate}}%</text>
+          <text class="rate-label">取消率</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- Badges -->
+    <view class="badges-row" wx:if="{{reliabilityProfile.badges.length > 0}}">
+      <view class="badge-item" wx:for="{{reliabilityProfile.badges}}" wx:key="index">
+        <text class="badge-icon">{{item.icon || '🏅'}}</text>
+        <text class="badge-name">{{item.name}}</text>
+      </view>
+    </view>
+
+    <!-- Signals -->
+    <view class="signals-list" wx:if="{{reliabilityProfile.signals.length > 0}}">
+      <view class="signal-item" wx:for="{{reliabilityProfile.signals}}" wx:key="index">
+        <text class="signal-dot {{item.type === 'positive' ? 'dot-green' : 'dot-orange'}}"></text>
+        <text class="signal-text">{{item.text || item}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- AI Profile Card -->
+  <view class="card ai-profile-card" wx:if="{{aiProfile.summary}}">
+    <view class="card-title">AI 阅读画像</view>
+
+    <!-- Summary -->
+    <view class="ai-summary" wx:if="{{aiProfile.summary}}">
+      <text class="ai-summary-text">{{aiProfile.summary}}</text>
+    </view>
+
+    <!-- Persona Tags -->
+    <view class="ai-section" wx:if="{{aiProfile.personaTags.length > 0}}">
+      <text class="ai-section-title">读者人设</text>
+      <view class="tag-wrap">
+        <text class="tag-chip ai-tag" wx:for="{{aiProfile.personaTags}}" wx:key="index">{{item}}</text>
+      </view>
+    </view>
+
+    <!-- Strengths -->
+    <view class="ai-section" wx:if="{{aiProfile.strengths.length > 0}}">
+      <text class="ai-section-title">阅读优势</text>
+      <view class="strengths-grid">
+        <view class="strength-item" wx:for="{{aiProfile.strengths}}" wx:key="index">
+          <text class="strength-text">{{item}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- Recommendation Strategy -->
+    <view class="ai-section" wx:if="{{aiProfile.recommendationStrategy}}">
+      <text class="ai-section-title">推荐策略</text>
+      <text class="ai-strategy-text">{{aiProfile.recommendationStrategy}}</text>
+    </view>
+
+    <!-- Gaps -->
+    <view class="ai-section" wx:if="{{aiProfile.gaps.length > 0}}">
+      <text class="ai-section-title">待拓展领域</text>
+      <view class="gaps-list">
+        <text class="gap-item" wx:for="{{aiProfile.gaps}}" wx:key="index">· {{item}}</text>
+      </view>
+    </view>
+
+    <!-- Next Actions -->
+    <view class="ai-section" wx:if="{{aiProfile.nextActions.length > 0}}">
+      <text class="ai-section-title">建议行动</text>
+      <view class="actions-list">
+        <view class="action-item" wx:for="{{aiProfile.nextActions}}" wx:key="index">
+          <text class="action-num">{{index + 1}}</text>
+          <text class="action-text">{{item}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- Feedback Signals -->
+    <view class="ai-section" wx:if="{{aiProfile.feedbackSignals}}">
+      <text class="ai-section-title">反馈信号</text>
+      <text class="ai-feedback-text">{{aiProfile.feedbackSignals}}</text>
+    </view>
+
+    <!-- Genre Tags -->
+    <view class="ai-section" wx:if="{{aiProfile.genreTags.length > 0}}">
+      <text class="ai-section-title">偏好类型</text>
+      <view class="tag-wrap">
+        <text class="tag-chip genre-tag" wx:for="{{aiProfile.genreTags}}" wx:key="index">{{item}}</text>
+      </view>
+    </view>
+
+    <!-- Slot Tags -->
+    <view class="ai-section" wx:if="{{aiProfile.slotTags.length > 0}}">
+      <text class="ai-section-title">活跃时段</text>
+      <view class="tag-wrap">
+        <text class="tag-chip slot-tag" wx:for="{{aiProfile.slotTags}}" wx:key="index">{{item}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- Match Rating Card -->
+  <view class="card rating-card" wx:if="{{matchRating.reviewCount > 0}}">
+    <view class="card-title">搭子评价</view>
+
+    <view class="rating-overall">
+      <text class="rating-overall-num">{{matchRating.overall}}</text>
+      <text class="rating-overall-label">综合评分</text>
+    </view>
+
+    <view class="rating-dimensions">
+      <view class="rating-dim-item">
+        <view class="dim-header">
+          <text class="dim-label">守时</text>
+          <text class="dim-value">{{matchRating.punctuality}}</text>
+        </view>
+        <view class="dim-bar">
+          <view class="dim-bar-fill" style="width: {{matchRating.punctuality * 20}}%;"></view>
+        </view>
+      </view>
+      <view class="rating-dim-item">
+        <view class="dim-header">
+          <text class="dim-label">专注</text>
+          <text class="dim-value">{{matchRating.focus}}</text>
+        </view>
+        <view class="dim-bar">
+          <view class="dim-bar-fill" style="width: {{matchRating.focus * 20}}%;"></view>
+        </view>
+      </view>
+      <view class="rating-dim-item">
+        <view class="dim-header">
+          <text class="dim-label">讨论</text>
+          <text class="dim-value">{{matchRating.discussion}}</text>
+        </view>
+        <view class="dim-bar">
+          <view class="dim-bar-fill" style="width: {{matchRating.discussion * 20}}%;"></view>
+        </view>
+      </view>
+      <view class="rating-dim-item">
+        <view class="dim-header">
+          <text class="dim-label">准备</text>
+          <text class="dim-value">{{matchRating.preparation}}</text>
+        </view>
+        <view class="dim-bar">
+          <view class="dim-bar-fill" style="width: {{matchRating.preparation * 20}}%;"></view>
+        </view>
+      </view>
+    </view>
+
+    <view class="rating-count">
+      <text>共 {{matchRating.reviewCount}} 条评价</text>
+    </view>
+  </view>
+
+  <!-- Edit Form (shown when editing) -->
+  <view class="card edit-card" wx:if="{{editing}}">
+    <view class="card-title">编辑资料</view>
+
+    <!-- Nickname -->
+    <view class="form-group">
+      <text class="form-label">昵称</text>
+      <input class="form-input" value="{{form.nickname}}" bindinput="onNicknameInput" placeholder="请输入昵称" maxlength="20" />
+    </view>
+
+    <!-- City Picker -->
+    <view class="form-group">
+      <text class="form-label">城市</text>
+      <picker mode="selector" range="{{CITY_OPTIONS}}" value="{{cityIndex}}" bindchange="onCityChange">
+        <view class="form-picker">
+          <text>{{form.city || '请选择城市'}}</text>
+          <text class="picker-arrow">▸</text>
+        </view>
+      </picker>
+    </view>
+
+    <!-- District Picker -->
+    <view class="form-group" wx:if="{{districtOptions.length > 0}}">
+      <text class="form-label">区域</text>
+      <picker mode="selector" range="{{districtOptions}}" value="{{districtIndex}}" bindchange="onDistrictChange">
+        <view class="form-picker">
+          <text>{{form.district || '请选择区域'}}</text>
+          <text class="picker-arrow">▸</text>
+        </view>
+      </picker>
+    </view>
+
+    <!-- Reading Level Picker -->
+    <view class="form-group">
+      <text class="form-label">阅读水平</text>
+      <picker mode="selector" range="{{LEVEL_OPTIONS}}" range-key="label" value="{{levelIndex}}" bindchange="onLevelChange">
+        <view class="form-picker">
+          <text>{{form.readingLevel ? LEVEL_OPTIONS[levelIndex].label : '请选择阅读水平'}}</text>
+          <text class="picker-arrow">▸</text>
+        </view>
+      </picker>
+    </view>
+
+    <!-- Preferred Genres Multi-select -->
+    <view class="form-group">
+      <text class="form-label">偏好类型（已选 {{form.preferredGenres.length}}/8）</text>
+      <view class="multi-select-tags">
+        <view
+          class="select-tag {{form.preferredGenres.indexOf(item.key) > -1 ? 'selected' : ''}}"
+          wx:for="{{GENRE_OPTIONS}}"
+          wx:key="key"
+          data-key="{{item.key}}"
+          bindtap="onGenreToggle"
+        >
+          <text>{{item.label}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- Available Slots Multi-select -->
+    <view class="form-group">
+      <text class="form-label">可用时段（已选 {{form.availableSlots.length}}/12）</text>
+      <view class="multi-select-tags">
+        <view
+          class="select-tag {{form.availableSlots.indexOf(item.key) > -1 ? 'selected' : ''}}"
+          wx:for="{{SLOT_OPTIONS}}"
+          wx:key="key"
+          data-key="{{item.key}}"
+          bindtap="onSlotToggle"
+        >
+          <text>{{item.label}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- Bio Textarea -->
+    <view class="form-group">
+      <text class="form-label">个人简介</text>
+      <view class="textarea-wrap">
+        <textarea
+          class="form-textarea"
+          value="{{form.bio}}"
+          bindinput="onBioInput"
+          placeholder="介绍一下你的阅读故事..."
+          maxlength="80"
+        />
+        <text class="char-counter">{{form.bio.length || 0}}/80</text>
+      </view>
+    </view>
+
+    <!-- Save Button -->
+    <button class="btn btn-primary btn-save" bindtap="onSaveProfile" disabled="{{saving}}">
+      {{saving ? '保存中...' : '保存资料'}}
+    </button>
+  </view>
+
+  <!-- Action Buttons -->
+  <view class="action-buttons">
+    <button
+      class="btn {{editing ? 'btn-secondary' : 'btn-primary'}}"
+      bindtap="onToggleEdit"
+      wx:if="{{!editing}}"
+    >
+      编辑资料
+    </button>
+    <button class="btn btn-secondary" bindtap="onGoManage">管理面板</button>
+    <button class="btn btn-outline" bindtap="onGoPrivacy">隐私设置</button>
+  </view>
+
+</view>

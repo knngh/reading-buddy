@@ -1,0 +1,181 @@
+<view class="container">
+  <!-- 顶部标题栏 -->
+  <view class="header-bar flex justify-between items-center mb-lg">
+    <text class="section-title">推荐</text>
+    <view class="flex gap-sm">
+      <button class="btn btn-secondary btn-small" bindtap="onUseCurrentLocation">
+        {{locationEnabled ? '已定位' : '定位'}}
+      </button>
+      <navigator url="/pages/profile/profile" class="btn btn-secondary btn-small">我的</navigator>
+    </view>
+  </view>
+
+  <!-- AI 算法卡片 -->
+  <view class="card card-accent section">
+    <view class="algo-title">AI 智能匹配</view>
+    <view class="algo-sub">基于 6 大维度为你精准推荐</view>
+    <view class="algo-grid grid grid-3 mt-md">
+      <view class="algo-grid-item">
+        <view class="algo-grid-value">同城</view>
+        <view class="algo-grid-label">城市匹配</view>
+      </view>
+      <view class="algo-grid-item">
+        <view class="algo-grid-value">同区</view>
+        <view class="algo-grid-label">区县优先</view>
+      </view>
+      <view class="algo-grid-item">
+        <view class="algo-grid-value">类型</view>
+        <view class="algo-grid-label">偏好匹配</view>
+      </view>
+      <view class="algo-grid-item">
+        <view class="algo-grid-value">距离</view>
+        <view class="algo-grid-label">就近推荐</view>
+      </view>
+      <view class="algo-grid-item">
+        <view class="algo-grid-value">水平</view>
+        <view class="algo-grid-label">阅读等级</view>
+      </view>
+      <view class="algo-grid-item">
+        <view class="algo-grid-value">名额</view>
+        <view class="algo-grid-label">余位匹配</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 筛选面板 -->
+  <view class="card section">
+    <view class="flex justify-between items-center mb-md">
+      <view class="section-title" style="margin-bottom: 0;">筛选条件</view>
+      <view class="flex items-center gap-sm">
+        <text wx:if="{{filterCount > 0}}" class="tag tag-teal">{{filterCount}} 项</text>
+        <text wx:if="{{filterCount > 0}}" class="text-accent reset-link" bindtap="onResetFilters">重置</text>
+      </view>
+    </view>
+
+    <!-- 城市 -->
+    <view class="form-group">
+      <view class="form-label">城市</view>
+      <picker mode="selector" range="{{CITY_OPTIONS}}" value="{{cityIndex}}" bindchange="onCityChange">
+        <view class="picker">
+          <text class="{{filters.city ? '' : 'picker-placeholder'}}">{{filters.city || '全部城市'}}</text>
+          <text class="picker-arrow">▼</text>
+        </view>
+      </picker>
+    </view>
+
+    <!-- 区县 -->
+    <view class="form-group" wx:if="{{districts.length > 0}}">
+      <view class="form-label">区县</view>
+      <picker mode="selector" range="{{districts}}" value="{{districtIndex}}" bindchange="onDistrictChange">
+        <view class="picker">
+          <text class="{{filters.district ? '' : 'picker-placeholder'}}">{{filters.district || '全部区县'}}</text>
+          <text class="picker-arrow">▼</text>
+        </view>
+      </picker>
+    </view>
+
+    <!-- 书籍类型 -->
+    <view class="form-group">
+      <view class="form-label">书籍类型</view>
+      <picker mode="selector" range="{{genreLabels}}" value="{{genreIndex}}" bindchange="onGenreChange">
+        <view class="picker">
+          <text class="{{filters.genre ? '' : 'picker-placeholder'}}">{{filters.genre ? GENRE_OPTIONS[genreIndex].label : '全部类型'}}</text>
+          <text class="picker-arrow">▼</text>
+        </view>
+      </picker>
+    </view>
+
+    <!-- 阅读水平 -->
+    <view class="form-group">
+      <view class="form-label">阅读水平</view>
+      <picker mode="selector" range="{{levelLabels}}" value="{{levelIndex}}" bindchange="onLevelChange">
+        <view class="picker">
+          <text class="{{filters.readingLevel ? '' : 'picker-placeholder'}}">{{filters.readingLevel ? LEVEL_OPTIONS[levelIndex].label : '不限水平'}}</text>
+          <text class="picker-arrow">▼</text>
+        </view>
+      </picker>
+    </view>
+
+    <!-- 时间档 -->
+    <view class="form-group" style="margin-bottom: 0;">
+      <view class="form-label">时间档</view>
+      <picker mode="selector" range="{{slotLabels}}" value="{{slotIndex}}" bindchange="onSlotChange">
+        <view class="picker">
+          <text class="{{filters.timeSlot ? '' : 'picker-placeholder'}}">{{filters.timeSlot ? SLOT_OPTIONS[slotIndex].label : '全部时段'}}</text>
+          <text class="picker-arrow">▼</text>
+        </view>
+      </picker>
+    </view>
+  </view>
+
+  <!-- 活动列表 -->
+  <view class="section">
+    <view wx:if="{{loading}}" class="empty">
+      <text class="empty-text">加载中...</text>
+    </view>
+
+    <view wx:elif="{{activities.length === 0}}" class="empty">
+      <view class="empty-icon-text">📚</view>
+      <text class="empty-text">暂无推荐活动</text>
+      <text class="empty-text mt-sm">尝试调整筛选条件或开启定位</text>
+    </view>
+
+    <block wx:else>
+      <view wx:for="{{activities}}" wx:key="id" class="card activity-card">
+        <view class="flex">
+          <!-- AI 等级标识 -->
+          <view class="ai-grade grade-{{item.aiGrade || 'c'}}">
+            {{item.aiGrade ? item.aiGrade.toUpperCase() : 'C'}}
+          </view>
+
+          <!-- 内容区 -->
+          <view class="flex-1 activity-content">
+            <view class="activity-title">{{item.title}}</view>
+
+            <view class="activity-meta text-muted mt-sm">
+              {{item.city}} {{item.district}}{{item.locationName ? ' · ' + item.locationName : ''}}
+            </view>
+
+            <view class="activity-meta text-muted mt-sm">
+              {{item.timeText}}
+            </view>
+
+            <view wx:if="{{item.aiSummary}}" class="activity-summary mt-md">
+              {{item.aiSummary}}
+            </view>
+
+            <!-- 标签 -->
+            <view class="tag-row flex flex-wrap mt-md">
+              <text wx:for="{{item.tags}}" wx:for-item="tag" wx:key="*this" class="tag tag-teal">
+                {{tag}}
+              </text>
+            </view>
+
+            <!-- 反馈按钮 -->
+            <view class="feedback-row flex gap-sm mt-md">
+              <button class="btn btn-accent-light btn-mini" data-id="{{item.id}}" data-type="interested" bindtap="onFeedback">
+                感兴趣
+              </button>
+              <button class="btn btn-secondary btn-mini" data-id="{{item.id}}" data-type="not_interested" bindtap="onFeedback">
+                不感兴趣
+              </button>
+              <button class="btn btn-secondary btn-mini" data-id="{{item.id}}" data-type="hide" bindtap="onFeedback">
+                隐藏
+              </button>
+            </view>
+
+            <!-- 操作按钮 -->
+            <view class="action-row flex gap-sm mt-md">
+              <button class="btn btn-primary btn-small flex-1" data-id="{{item.id}}" bindtap="onApply">
+                报名
+              </button>
+              <button class="btn btn-secondary btn-small" data-id="{{item.id}}" bindtap="onDetail">
+                详情
+              </button>
+            </view>
+          </view>
+        </view>
+      </view>
+    </block>
+  </view>
+</view>

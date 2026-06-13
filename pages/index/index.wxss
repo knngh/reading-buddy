@@ -1,0 +1,280 @@
+/**
+ * 读书搭子 - 首页样式
+ * 扩展 app.wxss 全局设计系统
+ * 色系: dark #17202a  teal #0f766e / #2dd4bf
+ */
+
+/* ---------- 页面容器 ---------- */
+.page-index {
+  padding-bottom: 120rpx;
+}
+
+/* ---------- 1. 顶部导航栏 ---------- */
+.header-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16rpx 0 28rpx;
+}
+
+.city-name {
+  font-size: 30rpx;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.city-district {
+  font-size: 24rpx;
+  color: #64748b;
+}
+
+.header-title {
+  font-size: 36rpx;
+  font-weight: 800;
+  color: #0f766e;
+  letter-spacing: 2rpx;
+}
+
+.header-icon-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 64rpx;
+  height: 64rpx;
+  border-radius: 50%;
+  background: #f1f5f9;
+}
+
+.icon-text {
+  font-size: 20rpx;
+  color: #475569;
+  font-weight: 600;
+}
+
+.header-avatar {
+  width: 64rpx;
+  height: 64rpx;
+  border-radius: 50%;
+  background: #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.avatar-img {
+  width: 64rpx;
+  height: 64rpx;
+  border-radius: 50%;
+}
+
+.avatar-placeholder {
+  font-size: 26rpx;
+  font-weight: 700;
+  color: #475569;
+}
+
+/* ---------- 2. 匹配就绪面板 ---------- */
+.readiness-card {
+  padding: 32rpx;
+}
+
+.readiness-title {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #e2e8f0;
+}
+
+.readiness-pct {
+  font-size: 32rpx;
+  font-weight: 800;
+  color: #2dd4bf;
+}
+
+/* ---------- 3. 画像提示标签 ---------- */
+.tip-chip {
+  display: inline-flex;
+  align-items: center;
+  height: 52rpx;
+  padding: 0 20rpx;
+  font-size: 22rpx;
+  border-radius: 26rpx;
+  background: #fef3c7;
+  color: #92400e;
+  border: 1rpx solid #fde68a;
+}
+
+/* ---------- 4. AI 洞察卡片 ---------- */
+.ai-insight-card {
+  border-left: 6rpx solid #0f766e;
+}
+
+.ai-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48rpx;
+  height: 48rpx;
+  border-radius: 10rpx;
+  background: linear-gradient(135deg, #0f766e, #14b8a6);
+  color: #fff;
+  font-size: 20rpx;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+
+.ai-persona {
+  font-size: 28rpx;
+  color: #334155;
+  line-height: 1.7;
+  display: block;
+}
+
+.ai-strategy {
+  font-size: 26rpx;
+  color: #475569;
+  line-height: 1.7;
+  display: block;
+}
+
+.ai-action {
+  display: block;
+  font-size: 24rpx;
+  color: #0f766e;
+  padding: 6rpx 0;
+}
+
+.ai-action::before {
+  content: "→ ";
+  color: #14b8a6;
+}
+
+/* ---------- 5. 统计网格（复用全局 .grid） ---------- */
+/* 首页微调：加大数字 */
+.page-index .grid-value {
+  font-size: 44rpx;
+}
+
+/* ---------- 6. 读书会意向池 ---------- */
+.intent-scroll {
+  white-space: nowrap;
+}
+
+.intent-pool-card {
+  display: inline-flex;
+  flex-direction: column;
+  width: 280rpx;
+  padding: 24rpx;
+  background: #fff;
+  border: 1rpx solid #e8edf3;
+  border-radius: 16rpx;
+  margin-right: 16rpx;
+  vertical-align: top;
+  flex-shrink: 0;
+  white-space: normal;
+}
+
+.pool-genre {
+  font-size: 28rpx;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 8rpx;
+}
+
+.pool-meta {
+  font-size: 22rpx;
+  color: #64748b;
+  line-height: 1.5;
+}
+
+.pool-dot {
+  color: #cbd5e1;
+  margin: 0 2rpx;
+}
+
+/* ---------- 7/9. 活动卡片 ---------- */
+.activity-card {
+  padding: 24rpx 28rpx;
+}
+
+.best-match-card {
+  border-left: 6rpx solid #14b8a6;
+  background: #f0fdfa;
+}
+
+.activity-row {
+  align-items: flex-start;
+}
+
+.activity-title {
+  font-size: 30rpx;
+  font-weight: 700;
+  color: #1e293b;
+  line-height: 1.5;
+  /* 最多两行 */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+
+.activity-meta {
+  margin-top: 4rpx;
+}
+
+.activity-summary {
+  display: block;
+  font-size: 24rpx;
+  color: #64748b;
+  line-height: 1.6;
+  margin-top: 8rpx;
+  /* 最多两行 */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+
+/* ---------- 反馈行 ---------- */
+.feedback-row {
+  display: flex;
+  align-items: center;
+}
+
+.feedback-btn {
+  font-size: 22rpx;
+}
+
+/* ---------- 10. 我的进展 ---------- */
+/* 复用全局 .card 与 .status-dot，无需额外样式 */
+
+/* ---------- 11. 安全提示底栏 ---------- */
+.safety-footer {
+  text-align: center;
+  padding: 40rpx 24rpx 24rpx;
+}
+
+.safety-text {
+  font-size: 22rpx;
+  color: #94a3b8;
+}
+
+/* ---------- 响应式：小屏幕适配 ---------- */
+@media (max-width: 375px) {
+  .intent-pool-card {
+    width: 240rpx;
+    padding: 20rpx;
+  }
+
+  .header-title {
+    font-size: 32rpx;
+  }
+
+  .readiness-pct {
+    font-size: 28rpx;
+  }
+
+  .page-index .grid-value {
+    font-size: 36rpx;
+  }
+}

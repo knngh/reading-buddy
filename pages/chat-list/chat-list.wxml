@@ -1,0 +1,237 @@
+<!-- pages/chat-list/chat-list.wxml -->
+<view class="page-container">
+
+  <!-- Tab Bar -->
+  <view class="tab-bar">
+    <view class="tab-item {{currentTab === index ? 'active' : ''}}"
+      wx:for="{{tabs}}" wx:key="index"
+      data-tab="{{index}}" bindtap="switchTab">
+      <text class="tab-text">{{item}}</text>
+      <view class="tab-indicator" wx:if="{{currentTab === index}}"></view>
+    </view>
+  </view>
+
+  <!-- Loading -->
+  <view class="loading-wrap" wx:if="{{loading}}">
+    <view class="loading-spinner"></view>
+    <text class="loading-text">加载中...</text>
+  </view>
+
+  <!-- ==================== Tab 0: 待办 ==================== -->
+  <view class="tab-content" wx:if="{{!loading && currentTab === 0}}">
+
+    <!-- Ops Funnel -->
+    <view class="card funnel-card" wx:if="{{opsFunnel}}">
+      <view class="card-title">活动漏斗</view>
+      <view class="funnel-chart">
+        <view class="funnel-stage" wx:for="{{opsFunnel}}" wx:key="key">
+          <view class="funnel-bar-wrap">
+            <view class="funnel-bar" style="width: {{item.percent}}%; background: {{item.color}};">
+              <text class="funnel-count">{{item.count}}</text>
+            </view>
+          </view>
+          <view class="funnel-label">{{item.label}}</view>
+        </view>
+      </view>
+    </view>
+
+    <!-- City Cold-Start Summary -->
+    <view class="card city-card" wx:if="{{cityOpsSummary}}">
+      <view class="card-title">城市冷启动</view>
+      <view class="city-stage-list">
+        <view class="city-stage-item {{cityOpsSummary.stage === item.key ? 'current' : ''}}"
+          wx:for="{{coldStartStages}}" wx:key="key">
+          <view class="stage-dot-wrap">
+            <view class="stage-dot {{cityOpsSummary.stage === item.key ? 'active' : ''}}"></view>
+            <view class="stage-line" wx:if="{{index < coldStartStages.length - 1}}"></view>
+          </view>
+          <view class="stage-info">
+            <view class="stage-name">{{item.label}}</view>
+            <view class="stage-desc">{{item.desc}}</view>
+          </view>
+          <view class="stage-count" wx:if="{{cityOpsSummary.counts[item.key] != null}}">
+            {{cityOpsSummary.counts[item.key]}}
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- Stats Overview -->
+    <view class="card stats-card">
+      <view class="grid grid-4">
+        <view class="grid-item stats-item stats-item-danger">
+          <view class="stats-value">{{stats.highRisk}}</view>
+          <view class="stats-label">高风险</view>
+        </view>
+        <view class="grid-item stats-item">
+          <view class="stats-value">{{stats.applications}}</view>
+          <view class="stats-label">待审报名</view>
+        </view>
+        <view class="grid-item stats-item">
+          <view class="stats-value">{{stats.reports}}</view>
+          <view class="stats-label">待处理举报</view>
+        </view>
+        <view class="grid-item stats-item">
+          <view class="stats-value">{{stats.reviews}}</view>
+          <view class="stats-label">待审评价</view>
+        </view>
+      </view>
+    </view>
+
+    <!-- Ops Queue -->
+    <view class="card queue-card">
+      <view class="card-title">待办队列</view>
+      <view class="queue-empty" wx:if="{{opsQueue.length === 0}}">
+        <text class="empty-text">暂无待办事项</text>
+      </view>
+      <view class="queue-list" wx:else>
+        <view class="queue-item" wx:for="{{opsQueue}}" wx:key="id">
+          <view class="queue-header">
+            <view class="queue-priority priority-{{item.priority}}">
+              <text class="priority-text">{{item.priorityLabel || item.priority}}</text>
+            </view>
+            <view class="queue-type">
+              <text class="type-text">{{item.typeLabel || item.type}}</text>
+            </view>
+            <view class="queue-badge" wx:if="{{item.activity && item.activity.levelLabel}}">
+              <text class="tag tag-small">{{item.activity.levelLabel}}</text>
+            </view>
+          </view>
+
+          <view class="queue-body">
+            <view class="queue-desc">{{item.description || item.title || ""}}</view>
+            <view class="queue-meta" wx:if="{{item.activity}}">
+              <text class="queue-activity-title" wx:if="{{item.activity.title}}">{{item.activity.title}}</text>
+              <text class="queue-time" wx:if="{{item.timeFormatted}}">{{item.timeFormatted}}</text>
+            </view>
+          </view>
+
+          <view class="queue-actions">
+            <!-- Report actions -->
+            <block wx:if="{{item.type === 'report'}}">
+              <button class="btn btn-small btn-primary"
+                data-reportid="{{item.reportId}}" data-action="dismiss"
+                bindtap="onResolveReport">驳回</button>
+              <button class="btn btn-small btn-accent"
+                data-reportid="{{item.reportId}}" data-action="uphold"
+                bindtap="onResolveReport">支持</button>
+            </block>
+            <!-- Activity review actions -->
+            <block wx:elif="{{item.type === 'activity_review'}}">
+              <button class="btn btn-small btn-primary"
+                data-activityid="{{item.activityId}}" data-action="approve"
+                bindtap="onResolveActivity">通过</button>
+              <button class="btn btn-small btn-accent"
+                data-activityid="{{item.activityId}}" data-action="reject"
+                bindtap="onResolveActivity">驳回</button>
+            </block>
+            <!-- Application actions -->
+            <block wx:elif="{{item.type === 'application'}}">
+              <button class="btn btn-small btn-secondary"
+                data-id="{{item.activityId}}" bindtap="onDetail">查看详情</button>
+            </block>
+            <!-- Default -->
+            <block wx:else>
+              <button class="btn btn-small btn-secondary"
+                data-id="{{item.activityId}}" bindtap="onDetail">查看详情</button>
+            </block>
+          </view>
+        </view>
+      </view>
+    </view>
+
+  </view>
+
+  <!-- ==================== Tab 1: 我的报名 ==================== -->
+  <view class="tab-content" wx:if="{{!loading && currentTab === 1}}">
+    <view class="card app-list-card">
+      <view class="app-list-empty" wx:if="{{myApplications.length === 0}}">
+        <text class="empty-icon">&#x1F4DA;</text>
+        <text class="empty-text">暂无报名记录</text>
+      </view>
+      <view class="app-list" wx:else>
+        <view class="app-item" wx:for="{{myApplications}}" wx:key="id"
+          data-id="{{item.activityId}}" bindtap="onDetail">
+          <view class="app-item-header">
+            <view class="app-item-title">{{item.activity.title || "未知活动"}}</view>
+            <view class="app-status-badge status-{{item.status}}">
+              <view class="status-dot status-dot-{{item.status}}"></view>
+              <text class="status-text">{{item.statusLabel}}</text>
+            </view>
+          </view>
+          <view class="app-item-meta">
+            <text class="app-genre" wx:if="{{item.activity.genreLabel}}">{{item.activity.genreLabel}}</text>
+            <text class="app-time" wx:if="{{item.activity.timeFormatted}}">{{item.activity.timeFormatted}}</text>
+          </view>
+          <view class="app-item-arrow">
+            <text class="arrow-icon">&#x203A;</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- ==================== Tab 2: 我发起的 ==================== -->
+  <view class="tab-content" wx:if="{{!loading && currentTab === 2}}">
+    <view class="card created-list-card">
+      <view class="created-list-empty" wx:if="{{myCreated.length === 0}}">
+        <text class="empty-icon">&#x1F4DD;</text>
+        <text class="empty-text">暂未发起活动</text>
+      </view>
+      <view class="created-list" wx:else>
+        <view class="created-item" wx:for="{{myCreated}}" wx:key="id">
+          <view class="created-header" data-id="{{item.id}}" bindtap="onDetail">
+            <view class="created-title-row">
+              <view class="created-title">{{item.title || "未命名活动"}}</view>
+              <view class="created-status status-{{item.status}}">{{item.statusLabel}}</view>
+            </view>
+            <view class="created-meta">
+              <text class="created-genre" wx:if="{{item.genreLabel}}">{{item.genreLabel}}</text>
+              <text class="created-time" wx:if="{{item.timeFormatted}}">{{item.timeFormatted}}</text>
+            </view>
+            <view class="created-counts">
+              <view class="count-item count-pending">
+                <text class="count-value">{{item.pendingCount}}</text>
+                <text class="count-label">待审</text>
+              </view>
+              <view class="count-item count-accepted">
+                <text class="count-value">{{item.acceptedCount}}</text>
+                <text class="count-label">已接受</text>
+              </view>
+              <view class="count-item count-rejected">
+                <text class="count-value">{{item.rejectedCount}}</text>
+                <text class="count-label">已拒绝</text>
+              </view>
+            </view>
+          </view>
+
+          <!-- Inline Applicant Review -->
+          <view class="inline-applicants" wx:if="{{item.applicantList.length > 0}}">
+            <view class="inline-applicant-item" wx:for="{{item.applicantList}}"
+              wx:for-item="app" wx:key="openid">
+              <view class="inline-applicant-info">
+                <view class="inline-applicant-name">{{app.nickName || "未知"}}</view>
+                <view class="inline-applicant-meta">
+                  <text class="tag tag-small" wx:if="{{app.levelLabel}}">{{app.levelLabel}}</text>
+                  <text class="inline-status status-{{app.status}}">{{app.statusLabel}}</text>
+                </view>
+                <view class="inline-applicant-message" wx:if="{{app.message}}">
+                  "{{app.message}}"
+                </view>
+              </view>
+              <view class="inline-applicant-actions" wx:if="{{app.status === 'pending'}}">
+                <button class="btn btn-small btn-primary inline-btn"
+                  data-activityid="{{item.id}}" data-openid="{{app.openid}}"
+                  data-decision="accept" bindtap="onReviewFromList">接受</button>
+                <button class="btn btn-small btn-secondary inline-btn"
+                  data-activityid="{{item.id}}" data-openid="{{app.openid}}"
+                  data-decision="reject" bindtap="onReviewFromList">拒绝</button>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+</view>

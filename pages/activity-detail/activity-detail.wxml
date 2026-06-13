@@ -1,0 +1,360 @@
+<!-- pages/activity-detail/activity-detail.wxml -->
+<view class="page-container">
+
+  <!-- 1. Header Card -->
+  <view class="card card-dark header-card" wx:if="{{activity}}">
+    <view class="header-top">
+      <view class="genre-label">{{activity.genreLabel}}</view>
+      <view class="status-badge status-{{activity.status}}">{{activity.statusLabel}}</view>
+    </view>
+    <view class="header-title">{{activity.title}}</view>
+    <view class="header-meta">
+      <view class="meta-item">
+        <text class="meta-icon">&#x1F4CD;</text>
+        <text class="meta-text">{{activity.locationName || "待定"}}</text>
+        <text class="meta-distance" wx:if="{{activity.distanceText}}">{{activity.distanceText}}</text>
+      </view>
+      <view class="meta-item">
+        <text class="meta-icon">&#x1F552;</text>
+        <text class="meta-text">{{activity.timeFormatted || "待定"}}</text>
+      </view>
+    </view>
+    <view class="cancel-reason" wx:if="{{activity.status === 'cancelled' && activity.cancelReason}}">
+      <text class="cancel-label">取消原因：</text>
+      <text class="cancel-text">{{activity.cancelReason}}</text>
+    </view>
+    <view class="header-actions">
+      <button class="btn btn-small btn-secondary" bindtap="onSharePoster">分享海报</button>
+    </view>
+  </view>
+
+  <!-- 2. Metrics Grid -->
+  <view class="card metrics-card" wx:if="{{activity}}">
+    <view class="grid grid-3">
+      <view class="grid-item">
+        <view class="metric-value">{{activity.participants || 0}}</view>
+        <view class="metric-label">已报名</view>
+      </view>
+      <view class="grid-item">
+        <view class="metric-value">{{activity.spotsLeft}}</view>
+        <view class="metric-label">剩余名额</view>
+      </view>
+      <view class="grid-item">
+        <view class="metric-value">{{activity.confirmedCount || 0}}</view>
+        <view class="metric-label">已确认</view>
+      </view>
+      <view class="grid-item">
+        <view class="metric-value">{{activity.waitlistCount || 0}}</view>
+        <view class="metric-label">等待中</view>
+      </view>
+      <view class="grid-item">
+        <view class="metric-value">{{activity.readinessPercent}}%</view>
+        <view class="metric-label">就绪度</view>
+      </view>
+      <view class="grid-item">
+        <view class="metric-value">{{shareCount}}</view>
+        <view class="metric-label">分享次数</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 3. Share Poster Card -->
+  <view class="card poster-card" wx:if="{{poster}}">
+    <view class="poster-preview" bindtap="onSharePoster">
+      <image class="poster-image" wx:if="{{poster.imageUrl}}" src="{{poster.imageUrl}}" mode="widthFix"></image>
+      <view class="poster-fallback" wx:else>
+        <view class="poster-genre-label">{{activity.genreLabel}}</view>
+        <view class="poster-title">{{activity.title}}</view>
+        <view class="poster-info-row">
+          <text class="poster-info">{{activity.timeFormatted}}</text>
+          <text class="poster-info">{{activity.locationName}}</text>
+        </view>
+        <view class="poster-tags">
+          <text class="tag" wx:if="{{activity.levelLabel}}">{{activity.levelLabel}}</text>
+          <text class="tag" wx:if="{{activity.bookModeLabel}}">{{activity.bookModeLabel}}</text>
+          <text class="tag" wx:if="{{activity.formatLabel}}">{{activity.formatLabel}}</text>
+        </view>
+        <view class="poster-spots">
+          还剩 {{activity.spotsLeft}} 个名额
+        </view>
+        <view class="poster-cta">点击查看详情</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 4. Creator Reliability Card -->
+  <view class="card creator-card" wx:if="{{activity && activity.creator}}">
+    <view class="card-title">发起人信誉</view>
+    <view class="creator-info">
+      <view class="creator-avatar-wrap">
+        <image class="creator-avatar" wx:if="{{activity.creator.avatarUrl}}" src="{{activity.creator.avatarUrl}}" mode="aspectFill"></image>
+        <view class="creator-avatar-placeholder" wx:else>{{activity.creator.nickName[0] || "?"}}</view>
+      </view>
+      <view class="creator-detail">
+        <view class="creator-name">{{activity.creator.nickName || "未知"}}</view>
+        <view class="creator-trust">
+          <text class="trust-score">{{activity.creator.trustScore || "--"}}</text>
+          <text class="trust-label">信任分</text>
+        </view>
+      </view>
+    </view>
+    <view class="creator-badges" wx:if="{{activity.creator.badges && activity.creator.badges.length > 0}}">
+      <view class="badge-item" wx:for="{{activity.creator.badges}}" wx:key="index">
+        <text class="badge-icon">{{item.icon}}</text>
+        <text class="badge-text">{{item.label}}</text>
+      </view>
+    </view>
+    <view class="reliability-signals" wx:if="{{activity.creator.signals && activity.creator.signals.length > 0}}">
+      <view class="grid grid-3">
+        <view class="grid-item signal-item" wx:for="{{activity.creator.signals}}" wx:key="index">
+          <view class="signal-value">{{item.value}}</view>
+          <view class="signal-label">{{item.label}}</view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 5. Activity Description Card -->
+  <view class="card desc-card" wx:if="{{activity}}">
+    <view class="card-title">活动介绍</view>
+    <view class="desc-text" wx:if="{{activity.description}}">{{activity.description}}</view>
+    <view class="desc-empty" wx:else>暂无描述</view>
+    <view class="desc-tags">
+      <text class="tag tag-genre" wx:if="{{activity.genreLabel}}">{{activity.genreLabel}}</text>
+      <text class="tag tag-level" wx:if="{{activity.levelLabel}}">{{activity.levelLabel}}</text>
+      <text class="tag tag-mode" wx:if="{{activity.bookModeLabel}}">{{activity.bookModeLabel}}</text>
+      <text class="tag tag-format" wx:if="{{activity.formatLabel}}">{{activity.formatLabel}}</text>
+    </view>
+    <view class="discussion-topic" wx:if="{{activity.discussionTopic}}">
+      <view class="topic-label">讨论话题</view>
+      <view class="topic-text">{{activity.discussionTopic}}</view>
+    </view>
+  </view>
+
+  <!-- 6. Safety Card -->
+  <view class="card safety-card" wx:if="{{activity && activity.location}}">
+    <view class="card-title">安全信息</view>
+    <view class="safety-topic" wx:if="{{activity.discussionTopic}}">
+      <view class="safety-label">讨论话题</view>
+      <view class="safety-text">{{activity.discussionTopic}}</view>
+    </view>
+    <view class="safety-location">
+      <view class="safety-label">活动地点</view>
+      <view class="safety-address">{{activity.location.address || activity.location.name || "待定"}}</view>
+    </view>
+    <button class="btn btn-secondary btn-small map-btn" bindtap="onOpenMap">打开地图</button>
+  </view>
+
+  <!-- 7. AI Recommendation Card -->
+  <view class="card ai-card" wx:if="{{activity && activity.aiRecommendation}}">
+    <view class="card-title">AI 推荐</view>
+    <view class="ai-match" wx:if="{{activity.aiRecommendation.matchLevel}}">
+      <text class="ai-match-label">匹配度：</text>
+      <view class="ai-match-bar">
+        <view class="ai-match-fill" style="width: {{activity.aiRecommendation.matchLevel}}%"></view>
+      </view>
+      <text class="ai-match-value">{{activity.aiRecommendation.matchLevel}}%</text>
+    </view>
+    <view class="ai-summary" wx:if="{{activity.aiRecommendation.summary}}">
+      {{activity.aiRecommendation.summary}}
+    </view>
+  </view>
+
+  <!-- 8. Post-Match Review Card -->
+  <view class="card review-card" wx:if="{{showReviewForm}}">
+    <view class="card-title">共读评价</view>
+    <view class="review-subtitle">请对本次共读体验进行评价</view>
+
+    <view class="slider-group">
+      <view class="slider-item">
+        <view class="slider-header">
+          <text class="slider-label">守时</text>
+          <text class="slider-value">{{reviewForm.punctuality}}</text>
+        </view>
+        <slider class="review-slider" min="60" max="140" value="{{reviewForm.punctuality}}"
+          data-field="punctuality" bindchange="onSliderChange" activeColor="#6C63FF" />
+      </view>
+
+      <view class="slider-item">
+        <view class="slider-header">
+          <text class="slider-label">专注度</text>
+          <text class="slider-value">{{reviewForm.focus}}</text>
+        </view>
+        <slider class="review-slider" min="60" max="140" value="{{reviewForm.focus}}"
+          data-field="focus" bindchange="onSliderChange" activeColor="#6C63FF" />
+      </view>
+
+      <view class="slider-item">
+        <view class="slider-header">
+          <text class="slider-label">讨论质量</text>
+          <text class="slider-value">{{reviewForm.discussion}}</text>
+        </view>
+        <slider class="review-slider" min="60" max="140" value="{{reviewForm.discussion}}"
+          data-field="discussion" bindchange="onSliderChange" activeColor="#6C63FF" />
+      </view>
+
+      <view class="slider-item">
+        <view class="slider-header">
+          <text class="slider-label">准备程度</text>
+          <text class="slider-value">{{reviewForm.preparation}}</text>
+        </view>
+        <slider class="review-slider" min="60" max="140" value="{{reviewForm.preparation}}"
+          data-field="preparation" bindchange="onSliderChange" activeColor="#6C63FF" />
+      </view>
+
+      <view class="slider-item slider-item-highlight">
+        <view class="slider-header">
+          <text class="slider-label">综合相对评分</text>
+          <text class="slider-value">{{reviewForm.relativeScore}}</text>
+        </view>
+        <slider class="review-slider" min="60" max="140" value="{{reviewForm.relativeScore}}"
+          data-field="relativeScore" bindchange="onSliderChange" activeColor="#FF6B6B" />
+      </view>
+    </view>
+
+    <view class="review-comment">
+      <view class="comment-label">评价留言</view>
+      <textarea class="comment-textarea" placeholder="写下你的共读感受..."
+        value="{{reviewForm.comment}}" bindinput="onReviewCommentInput"
+        maxlength="500" auto-height />
+    </view>
+
+    <button class="btn btn-primary review-submit-btn" bindtap="onSubmitReview">提交评价</button>
+  </view>
+
+  <!-- 9. Application Status Card (for applicants) -->
+  <view class="card app-status-card" wx:if="{{myApplication && !isCreator}}">
+    <view class="card-title">我的报名状态</view>
+    <view class="app-status-row">
+      <view class="status-dot status-dot-{{myApplication.status}}"></view>
+      <text class="app-status-text">{{myApplication.statusLabel || myApplication.status}}</text>
+    </view>
+    <view class="app-status-message" wx:if="{{myApplication.message}}">
+      <text class="message-label">报名留言：</text>
+      <text class="message-text">{{myApplication.message}}</text>
+    </view>
+    <view class="app-actions">
+      <button class="btn btn-primary" wx:if="{{myApplication.status === 'accepted'}}"
+        bindtap="onConfirmAttendance">确认出席</button>
+      <button class="btn btn-secondary" wx:if="{{myApplication.status === 'pending' || myApplication.status === 'accepted'}}"
+        bindtap="onWithdrawApplication">撤回报名</button>
+    </view>
+  </view>
+
+  <!-- 10. Applicant Review Card (for creators) -->
+  <view class="card applicant-card" wx:if="{{isCreator && applicants.length > 0}}">
+    <view class="card-title">报名审核</view>
+
+    <!-- Summary Metrics -->
+    <view class="applicant-summary">
+      <view class="grid grid-3">
+        <view class="grid-item">
+          <view class="metric-value">{{activity.pendingCount || 0}}</view>
+          <view class="metric-label">待审核</view>
+        </view>
+        <view class="grid-item">
+          <view class="metric-value">{{activity.acceptedCount || 0}}</view>
+          <view class="metric-label">已接受</view>
+        </view>
+        <view class="grid-item">
+          <view class="metric-value">{{activity.rejectedCount || 0}}</view>
+          <view class="metric-label">已拒绝</view>
+        </view>
+      </view>
+    </view>
+
+    <!-- Applicant List -->
+    <view class="applicant-list">
+      <view class="applicant-item" wx:for="{{applicants}}" wx:key="openid">
+        <view class="applicant-main">
+          <view class="applicant-header">
+            <view class="applicant-avatar-wrap">
+              <image class="applicant-avatar" wx:if="{{item.avatarUrl}}" src="{{item.avatarUrl}}" mode="aspectFill"></image>
+              <view class="applicant-avatar-placeholder" wx:else>{{item.nickName[0] || "?"}}</view>
+            </view>
+            <view class="applicant-info">
+              <view class="applicant-name">{{item.nickName || "未知用户"}}</view>
+              <view class="applicant-meta">
+                <text class="tag tag-small" wx:if="{{item.levelLabel}}">{{item.levelLabel}}</text>
+                <text class="applicant-city" wx:if="{{item.city}}">{{item.city}}</text>
+              </view>
+            </view>
+            <view class="applicant-status-dot status-dot-{{item.status}}"></view>
+          </view>
+          <view class="applicant-message" wx:if="{{item.message}}">
+            <text class="applicant-message-text">{{item.message}}</text>
+          </view>
+          <view class="applicant-actions" wx:if="{{item.status === 'pending'}}">
+            <button class="btn btn-small btn-primary"
+              data-openid="{{item.openid}}" data-decision="accept" bindtap="onReview">接受</button>
+            <button class="btn btn-small btn-secondary"
+              data-openid="{{item.openid}}" data-decision="reject" bindtap="onReview">拒绝</button>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 11. Report Card -->
+  <view class="card report-card">
+    <view class="card-title-row">
+      <view class="card-title">举报与屏蔽</view>
+      <button class="btn btn-small btn-secondary" bindtap="onToggleReportForm">
+        {{showReportForm ? '收起' : '展开'}}
+      </button>
+    </view>
+
+    <view class="report-form" wx:if="{{showReportForm}}">
+      <view class="form-label">举报原因</view>
+      <view class="report-reasons">
+        <view class="report-reason-item {{selectedReportReason === index ? 'selected' : ''}}"
+          wx:for="{{reportReasons}}" wx:key="value"
+          data-index="{{index}}" bindtap="onSelectReportReason">
+          {{item.label}}
+        </view>
+      </view>
+
+      <view class="form-label">补充说明</view>
+      <textarea class="report-textarea" placeholder="请描述具体情况（选填）"
+        value="{{reportForm.description}}" bindinput="onReportDescInput"
+        maxlength="500" auto-height />
+
+      <button class="btn btn-primary report-submit-btn" bindtap="onReport">提交举报</button>
+    </view>
+
+    <view class="report-extra">
+      <button class="btn btn-small btn-accent block-btn" bindtap="onBlockCreator">拉黑发起人</button>
+    </view>
+  </view>
+
+  <!-- Apply Button (floating) -->
+  <view class="floating-apply" wx:if="{{activity && activity.status === 'open' && !isCreator && !myApplication}}">
+    <button class="btn btn-primary apply-btn" bindtap="onApply">立即报名</button>
+  </view>
+
+  <!-- Cancel Button (for creator) -->
+  <view class="floating-apply" wx:if="{{activity && activity.status !== 'cancelled' && activity.status !== 'completed' && isCreator}}">
+    <button class="btn btn-accent cancel-btn" bindtap="onCancelActivity">取消活动</button>
+  </view>
+
+  <!-- Withdraw Dialog -->
+  <view class="dialog-mask" wx:if="{{showWithdrawDialog}}" bindtap="onCloseWithdrawDialog"></view>
+  <view class="dialog-box" wx:if="{{showWithdrawDialog}}">
+    <view class="dialog-title">撤回报名</view>
+    <view class="dialog-content">
+      <view class="form-label">请选择撤回原因</view>
+      <view class="withdraw-reasons">
+        <view class="withdraw-reason-item {{selectedWithdrawReason === item.value ? 'selected' : ''}}"
+          wx:for="{{withdrawReasons}}" wx:key="value"
+          data-value="{{item.value}}" bindtap="onSelectWithdrawReason">
+          {{item.label}}
+        </view>
+      </view>
+    </view>
+    <view class="dialog-actions">
+      <button class="btn btn-small btn-secondary" bindtap="onCloseWithdrawDialog">取消</button>
+      <button class="btn btn-small btn-primary" bindtap="onConfirmWithdraw">确认撤回</button>
+    </view>
+  </view>
+
+</view>

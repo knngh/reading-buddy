@@ -1,0 +1,43 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/match-list/match-list",
+    "pages/post-create/post-create",
+    "pages/chat-list/chat-list",
+    "pages/profile/profile",
+    "pages/activity-detail/activity-detail",
+    "pages/chat/chat",
+    "pages/privacy/privacy"
+  ],
+  "window": {
+    "navigationBarBackgroundColor": "#ffffff",
+    "navigationBarTitleText": "读书搭子",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#f5f7fa",
+    "backgroundTextStyle": "dark"
+  },
+  "tabBar": {
+    "color": "#94a3b8",
+    "selectedColor": "#1e293b",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "white",
+    "list": [
+      { "pagePath": "pages/index/index", "text": "搭子" },
+      { "pagePath": "pages/match-list/match-list", "text": "推荐" },
+      { "pagePath": "pages/post-create/post-create", "text": "发布" },
+      { "pagePath": "pages/chat-list/chat-list", "text": "管理" },
+      { "pagePath": "pages/profile/profile", "text": "我的" }
+    ]
+  },
+  "permission": {
+    "scope.userLocation": {
+      "desc": "用于推荐附近的读书活动"
+    }
+  },
+  "requiredPrivateInfos": [
+    "getLocation"
+  ],
+  "__usePrivacyCheck__": true,
+  "lazyCodeLoading": "requiredComponents",
+  "sitemapLocation": "sitemap.json"
+}

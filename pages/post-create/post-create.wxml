@@ -1,0 +1,170 @@
+<view class="container">
+  <view class="section-title mb-lg">发布读书活动</view>
+
+  <!-- 1. 活动标题 -->
+  <view class="form-group">
+    <view class="form-label">活动标题</view>
+    <input class="input" placeholder="输入活动标题" value="{{form.title}}" data-field="title" bindinput="onInputChange" />
+  </view>
+
+  <!-- 2. 书籍类型 -->
+  <view class="form-group">
+    <view class="form-label">书籍类型</view>
+    <picker mode="selector" range="{{genreLabels}}" value="{{genreIndex}}" bindchange="onGenreChange">
+      <view class="picker">
+        <text class="{{form.genre ? '' : 'picker-placeholder'}}">{{form.genre ? genreLabels[genreIndex] : '请选择书籍类型'}}</text>
+        <text class="picker-arrow">▼</text>
+      </view>
+    </picker>
+  </view>
+
+  <!-- 3. 阅读水平 -->
+  <view class="form-group">
+    <view class="form-label">阅读水平</view>
+    <picker mode="selector" range="{{levelLabels}}" value="{{levelIndex}}" bindchange="onLevelChange">
+      <view class="picker">
+        <text class="{{form.readingLevel ? '' : 'picker-placeholder'}}">{{form.readingLevel ? levelLabels[levelIndex] : '请选择阅读水平'}}</text>
+        <text class="picker-arrow">▼</text>
+      </view>
+    </picker>
+  </view>
+
+  <!-- 4. 城市 -->
+  <view class="form-group">
+    <view class="form-label">城市</view>
+    <picker mode="selector" range="{{cityOptions}}" value="{{cityIndex}}" bindchange="onCityChange">
+      <view class="picker">
+        <text class="{{form.city ? '' : 'picker-placeholder'}}">{{form.city || '请选择城市'}}</text>
+        <text class="picker-arrow">▼</text>
+      </view>
+    </picker>
+  </view>
+
+  <!-- 5. 区县 -->
+  <view class="form-group">
+    <view class="form-label">区县</view>
+    <picker mode="selector" range="{{districtOptions}}" value="{{districtIndex}}" bindchange="onDistrictChange">
+      <view class="picker">
+        <text class="{{form.district ? '' : 'picker-placeholder'}}">{{form.district || '请选择区县'}}</text>
+        <text class="picker-arrow">▼</text>
+      </view>
+    </picker>
+  </view>
+
+  <!-- 6. 活动形式 -->
+  <view class="form-group">
+    <view class="form-label">活动形式</view>
+    <picker mode="selector" range="{{formatLabels}}" value="{{formatIndex}}" bindchange="onFormatChange">
+      <view class="picker">
+        <text class="{{form.format ? '' : 'picker-placeholder'}}">{{form.format ? formatLabels[formatIndex] : '请选择活动形式'}}</text>
+        <text class="picker-arrow">▼</text>
+      </view>
+    </picker>
+  </view>
+
+  <!-- 7. 活动地点 -->
+  <view class="form-group" wx:if="{{form.format === 'offline' || form.format === 'hybrid'}}">
+    <view class="form-label">活动地点</view>
+
+    <!-- 已选地点 -->
+    <view wx:if="{{form.locationName}}" class="selected-place card">
+      <view class="place-name">{{form.locationName}}</view>
+      <view class="place-address text-muted">{{form.locationAddress}}</view>
+    </view>
+
+    <!-- 搜索框 -->
+    <view class="place-search-row flex gap-sm">
+      <input class="input flex-1" placeholder="搜索地点，如：星巴克" value="{{placeKeyword}}" bindinput="onPlaceKeywordInput" />
+      <button class="btn btn-primary btn-small" bindtap="onSearchPlace" disabled="{{searchingPlace}}">
+        {{searchingPlace ? '搜索中' : '搜索'}}
+      </button>
+    </view>
+
+    <!-- 搜索结果列表 -->
+    <view wx:if="{{placeResults.length > 0}}" class="place-results card">
+      <view
+        wx:for="{{placeResults}}"
+        wx:key="id"
+        class="place-result-item"
+        data-index="{{index}}"
+        bindtap="onSelectPlace"
+      >
+        <view class="place-name">{{item.name}}</view>
+        <view class="place-address text-muted">{{item.address}}</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 8. 活动日期 -->
+  <view class="form-group">
+    <view class="form-label">活动日期</view>
+    <picker mode="date" start="{{dateRange.start}}" end="{{dateRange.end}}" value="{{form.date}}" bindchange="onDateChange">
+      <view class="picker">
+        <text class="{{form.date ? '' : 'picker-placeholder'}}">{{form.date || '请选择日期'}}</text>
+        <text class="picker-arrow">▼</text>
+      </view>
+    </picker>
+  </view>
+
+  <!-- 9. 活动时间 -->
+  <view class="form-group">
+    <view class="form-label">活动时间</view>
+    <picker mode="time" value="{{form.time}}" bindchange="onTimeChange">
+      <view class="picker">
+        <text class="{{form.time ? '' : 'picker-placeholder'}}">{{form.time || '请选择时间'}}</text>
+        <text class="picker-arrow">▼</text>
+      </view>
+    </picker>
+  </view>
+
+  <!-- 10. 最大参与人数 -->
+  <view class="form-group">
+    <view class="form-label">最大参与人数</view>
+    <picker mode="selector" range="{{participantLabels}}" value="{{participantIndex}}" bindchange="onParticipantsChange">
+      <view class="picker">
+        <text>{{form.maxParticipants}} 人</text>
+        <text class="picker-arrow">▼</text>
+      </view>
+    </picker>
+  </view>
+
+  <!-- 11. 书籍获取方式 -->
+  <view class="form-group">
+    <view class="form-label">书籍获取方式</view>
+    <picker mode="selector" range="{{bookModeLabels}}" value="{{bookModeIndex}}" bindchange="onBookModeChange">
+      <view class="picker">
+        <text class="{{form.bookMode ? '' : 'picker-placeholder'}}">{{form.bookMode ? bookModeLabels[bookModeIndex] : '请选择书籍获取方式'}}</text>
+        <text class="picker-arrow">▼</text>
+      </view>
+    </picker>
+  </view>
+
+  <!-- 12. 活动描述 + AI 生成 -->
+  <view class="form-group">
+    <view class="form-label-row flex justify-between items-center">
+      <text class="form-label" style="margin-bottom: 0;">活动描述</text>
+      <button class="btn btn-accent-light btn-mini" bindtap="onAiGenerate" disabled="{{aiGenerating}}">
+        {{aiGenerating ? 'AI 生成中...' : 'AI 生成'}}
+      </button>
+    </view>
+    <view class="mt-sm">
+      <textarea class="textarea" placeholder="描述活动内容、阅读计划、注意事项等" value="{{form.description}}" data-field="description" bindinput="onInputChange" maxlength="2000" />
+    </view>
+  </view>
+
+  <!-- 13. 讨论话题 -->
+  <view class="form-group">
+    <view class="form-label">讨论话题（选填）</view>
+    <textarea class="textarea" placeholder="列出希望讨论的话题或问题" value="{{form.discussionTopic}}" data-field="discussionTopic" bindinput="onInputChange" maxlength="1000" />
+  </view>
+
+  <!-- 14. 提交按钮 -->
+  <view class="submit-section mt-lg">
+    <button class="btn btn-primary btn-block" bindtap="onSubmit" disabled="{{submitting}}">
+      {{submitting ? '发布中...' : '发布活动'}}
+    </button>
+  </view>
+
+  <!-- 底部留白 -->
+  <view style="height: 60rpx;"></view>
+</view>
