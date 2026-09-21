@@ -91,6 +91,10 @@ reading-buddy/
 
 文学小说 / 商业管理 / 科技互联网 / 历史人文 / 心理学 / 哲学思想 / 自我提升 / 艺术设计 / 科幻悬疑 / 人物传记 / 教育学习
 
+
 ## License
 
-MIT
+[![License: AGPL v3](https://img.shields.io/badge/License-AGPL_v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
+
+本项目采用 [AGPL-3.0](./LICENSE) 许可协议开源。基于本项目的修改版本及通过网络提供服务的衍生服务，须以相同协议开源。
+
